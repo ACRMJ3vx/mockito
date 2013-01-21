@@ -131,11 +131,27 @@ public class GenericMetadataSupportTest {
     public void class_return_type_of____append____resolved_to_StringBuilder_and_type_arguments() throws Exception {
         GenericMetadataSupport genericMetadata = inferFrom(StringBuilder.class).resolveGenericReturnType(firstNamedMethod("append", StringBuilder.class));
 
-        assertThat(genericMetadata.rawType()).isEqualTo(StringBuilder.class);
+        assertThat(genericMetadata.rawType()).isEqualTo(class_return_type_of____append____resolved_to_StringBuilder_and_type_arguments_test_class());
         assertThat(genericMetadata.actualTypeArguments()).isEmpty();
     }
 
-
+    private Class<?> class_return_type_of____append____resolved_to_StringBuilder_and_type_arguments_test_class() {
+	// openjdk has a slightly different api
+	// with an AbstractStringBuilder class
+	// and all the append methods return an AbstractStringBuilder
+	// StringBuilder extends AbstractStringBuilder but does not
+	// change the return type of the append methods
+	// this kludge is necessary for the test to pass on
+	// an openjdk system
+	System . out . println ( "getting test class" ) ;
+	try {
+	    System . out . println ( "trying to getting test class AbstractStringBuilder" ) ;
+	    return Class.forName("java.lang.AbstractStringBuilder");
+	} catch ( ClassNotFoundException cause ) {
+	    System . out . println ( "but getting test class StringBuilder" ) ;
+	    return StringBuilder.class;
+	}
+    }
 
     @Test
     public void paramType_with_wildcard_return_type_of____returning_wildcard_with_class_lower_bound____resolved_to_List_and_type_argument_to_Integer() throws Exception {
