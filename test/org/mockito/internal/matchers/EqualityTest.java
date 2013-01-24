@@ -9,9 +9,42 @@ import org.junit.Test;
 import static org.mockito.internal.matchers.Equality.areEqual;
 
 public class EqualityTest extends TestBase {
+    /**
+     * since we are comparing one object to itself
+     * it should return true based on object reference identity
+     * even if the object's equals method throws an
+     * Exception.
+     *
+     * This method will try a comparison on an object known to
+     * throw a RuntimeException on .equals.
+     * It will record true if the 
+     **/
+    private boolean shouldKnowIfSameObjectIsEqualEvenIfRuntimeExceptionInEquals() {
+	Object x = new RuntimeException ( ) {
+	    /**
+	     * this method will always throw a runtime exception
+	     * but it still should be possible to compare
+	     * if the objects are the same reference
+	     *
+	     * @return never
+	     * @throws RuntimeException always
+	     **/
+	     @Override
+	     public boolean equals(Object obj) {
+	         throw this ;
+	     }
+	} ;
+	try {
+	     return areEqual(x,x);
+	}
+	catch(RuntimeException cause){
+	     return false;
+        }
+    }
     
     @Test
     public void shouldKnowIfObjectsAreEqual() throws Exception {
+	assertTrue(shouldKnowIfSameObjectIsEqualEvenIfRuntimeExceptionInEquals());
         int[] arr = new int[] {1, 2};
         assertTrue(areEqual(arr, arr));
         assertTrue(areEqual(new int[] {1, 2}, new int[] {1, 2}));
