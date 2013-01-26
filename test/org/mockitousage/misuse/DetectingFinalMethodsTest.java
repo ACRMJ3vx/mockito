@@ -14,8 +14,8 @@ import org.mockitoutil.TestBase;
 public class DetectingFinalMethodsTest extends TestBase {
     
     class WithFinal {
-        final int foo() {
-            return 0;
+        final String foo() {
+            return "HI";
         }
     }
     
