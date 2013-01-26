@@ -10,8 +10,23 @@ import static org.mockito.internal.matchers.Equality.areEqual;
 
 public class EqualityTest extends TestBase {
     
+	private boolean shouldKnowIfIdenticalObjectsAreEqualEvenWhenOneThrowsRuntimeException ( ) {
+            Object i = new RuntimeException(){
+                @Override
+		public boolean equals ( Object other ) {
+                    throw this ;
+		}
+	    } ;
+	    try {
+                return areEqual(i,i);
+	    } catch ( RuntimeException cause ) {
+	        return false;
+	    }
+	}
+
     @Test
     public void shouldKnowIfObjectsAreEqual() throws Exception {
+	assertTrue(shouldKnowIfIdenticalObjectsAreEqualEvenWhenOneThrowsRuntimeException());
         int[] arr = new int[] {1, 2};
         assertTrue(areEqual(arr, arr));
         assertTrue(areEqual(new int[] {1, 2}, new int[] {1, 2}));
