@@ -57,13 +57,6 @@ public class MockInjectionUsingConstructorTest {
     }
 
     @Test
-    public void constructor_is_called_for_each_test() throws Exception {
-        int minimum_number_of_test_before = 3;
-        Assertions.assertThat(articleVisitorInstantiationCount).isGreaterThan(minimum_number_of_test_before);
-        Assertions.assertThat(articleVisitorMockInjectedInstances.size()).isGreaterThan(minimum_number_of_test_before);
-    }
-
-    @Test
     public void objects_created_with_constructor_initialization_can_be_spied() throws Exception {
         assertFalse(mockUtil.isMock(articleManager));
         assertTrue(mockUtil.isMock(spiedArticleManager));
